@@ -1,0 +1,4 @@
+com/example/backend/model/User.class
+com/example/backend/db/DatabaseManager.class
+com/example/backend/service/LoginManager.class
+com/example/demo/TrinityApplication.class
