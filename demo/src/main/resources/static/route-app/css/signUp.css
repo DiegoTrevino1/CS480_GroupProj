@@ -27,7 +27,7 @@ body{
   background: var(--bg);
   border: 5px solid var(--black);
   display: grid;
-  height: min(800px, 92vh);
+  min-height: min(800px, 92vh);
   padding: 24px;
   place-items: center;
   width: min(920px, 92vw);
@@ -148,6 +148,7 @@ body{
   font-size: 18px;
   min-height: 46px;
   place-items: center;
+  padding: 1rem 1rem;
   width: min(360px, 70%);
 }
 
@@ -170,7 +171,6 @@ body{
   font-size: clamp(24px, 3.3vw, 40px);
   font-weight: 700;
   padding: 0 6px 30px;
-  transition: all 0.18s ease;
   width: min(260px, 55%);
 }
 
@@ -187,13 +187,6 @@ body{
   border-bottom: 0px solid #222;
   font-size: clamp(18px, 2.6vw, 30px);
   width: min(460px, 52%);
-}
-
-
-/* Slight Animations */
-/* smooth animation for visual feedback */
-input{
-  transition: all 0.15s ease;
 }
 
 
@@ -214,7 +207,6 @@ input:focus{
 
 .link-btn{
   cursor: pointer;
-  transition: all 0.25s ease;
 }
 
 
