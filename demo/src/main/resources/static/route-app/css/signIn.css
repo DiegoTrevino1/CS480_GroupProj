@@ -27,7 +27,7 @@ body{
   background: var(--bg);
   border: 5px solid var(--black);
   display: grid;
-  height: min(800px, 92vh);
+  min-height: min(800px, 92vh);
   padding: 24px;
   place-items: center;
   width: min(920px, 92vw);
@@ -140,7 +140,7 @@ body{
 }
 
 
-.message{
+.message {
   background: var(--white);
   border-radius: 2px;
   color: var(--red);
@@ -149,6 +149,7 @@ body{
   min-height: 3rem;
   margin-top: 0.5rem;
   place-items: center;
+  padding: 1rem 1rem;
   width: min(360px, 70%);
 }
 
@@ -171,7 +172,6 @@ body{
   font-size: clamp(2rem, 3.3vw, 2rem);
   font-weight: 700;
   padding: 0 6px 1.5rem;
-  transition: all 0.18s ease;
   width: min(260px, 55%);
 }
 
@@ -192,13 +192,6 @@ body{
 }
 
 
-/* Slight Animations */
-/* smooth animation for visual feedback */
-input{
-  transition: all 0.15s ease;
-}
-
-
 /* when mouse hovers over the textbox */
 input:hover{
   border-color: var(--transition-color);
@@ -216,7 +209,6 @@ input:focus{
 
 .link-btn{
   cursor: pointer;
-  transition: all 0.25s ease;
 }
 
 
