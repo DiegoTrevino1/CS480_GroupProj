@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Route Planner</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+
+    
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="../css/mainPage.css">
+</head>
+<body>
+    <main class="app-container">
+        
+        <!-- Sidebar Navigation & Routing Controls -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <header class="sidebar-header">
+                </header>
+
+                <form id="routing-form" class="routing-form">
+                    <!-- Start Input -->
+                    <div class="input-group">
+                        <label for="start-location">Start</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                            </span>
+                            <input type="text" id="start-location" name="start-location" required autocomplete="off">
+                        </div>
+                    </div>
+                    
+                    <!-- Destination Input -->
+                    <div class="input-group">
+                        <label for="end-location">Destination</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon marker-dest">
+                            </span>
+                            <input type="text" id="end-location" name="end-location" required autocomplete="off">
+                        </div>
+                    </div>
+
+                    <!-- Routing Error Message Container -->
+                    <div id="routing-error-msg" class="message-box" style="display: none; border: 1px solid black; color: red; font-size: 14px; font-weight: 600; text-align: center; margin: 0.5rem auto; padding: 0.5rem; width: 80%;">
+                        Invalid City
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-route" id="btn-route">
+                        <span>Route</span>
+                    </button>
+                    <!-- UC5/Mockup: Cancel Route Button -->
+                    <button type="button" class="btn btn-cancel" id="btn-cancel">
+                        <span>Cancel</span>
+                    </button>
+                </form>
+
+                <!-- NEW ACTIVE ROUTE PANEL (Phase 1) -->
+                <div id="active-route-panel" class="active-route-panel" style="display: none;">
+                    <!-- Top header with Back arrow -->
+                    <div class="ar-header">
+                        <button class="btn-back-arrow" id="btn-back-search" aria-label="Go Back">
+                            <!-- Block left arrow SVG (Blue with black border) -->
+                            <svg width="32" height="24" viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12,2 L12,8 L30,8 L30,16 L12,16 L12,22 L2,12 Z" fill="#2563eb" stroke="#000" stroke-width="2"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- From/To Inputs -->
+                    <div class="ar-inputs">
+                        <div class="ar-input-row">
+                            <label class="ar-label">From :</label>
+                            <input type="text" class="ar-input" id="ar-start-display" readonly>
+                        </div>
+                        <div class="ar-input-row">
+                            <label class="ar-label">To :</label>
+                            <input type="text" class="ar-input" id="ar-end-display" readonly>
+                        </div>
+
+                        <!-- Waypoints container (UC7-FR13) -->
+                        <div id="ar-waypoints-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+                        
+                        <!-- Actions -->
+                        <div class="ar-actions-row">
+                            <button class="btn-ar-action" id="btn-ar-route">Route</button>
+                            <button class="btn-ar-action" id="btn-ar-add-wp">Add Waypoint</button>
+                        </div>
+
+                        <!-- Route Summary (Phase 2) -->
+                        <div class="ar-summary-block">
+                            <span class="ar-est-label">Est. Time and Distance (mi)</span>
+                            <div class="ar-time-dist">
+                                <span class="ar-time text-green" id="ar-time-display">(Time)</span> 
+                                <span class="ar-dist text-gray" id="ar-dist-display">Distance(mi)</span>
+                            </div>
+                            
+                            <a href="#" class="ar-print-link">Print out directions</a>
+                        </div>
+
+                        <!-- Turn-by-Turn Directions (Phase 3) -->
+                        <div class="ar-directions-container" id="ar-directions-container">
+                            <div class="dir-city-header">Start City</div>
+                            
+                            <div class="dir-step">
+                                <span class="dir-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </span>
+                                <div class="dir-content">
+                                    <div class="dir-instruction">Get on (route) & (road)</div>
+                                    <div class="dir-meta">
+                                        <span class="dir-time">Time</span>
+                                        <span class="dir-miles">(miles)</span>
+                                    </div>
+                                    <div class="dir-divider"></div>
+                                </div>
+                            </div>
+
+                            <div class="dir-step">
+                                <span class="dir-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </span>
+                                <div class="dir-content">
+                                    <div class="dir-instruction">Get on (route) & (road)</div>
+                                    <div class="dir-meta">
+                                        <span class="dir-time">Time</span>
+                                        <span class="dir-miles">(miles)</span>
+                                    </div>
+                                    <div class="dir-divider"></div>
+                                </div>
+                            </div>
+
+                            <div class="dir-step">
+                                <span class="dir-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </span>
+                                <div class="dir-content">
+                                    <div class="dir-instruction">Get on (route) & (road)</div>
+                                    <div class="dir-meta">
+                                        <span class="dir-time">Time</span>
+                                        <span class="dir-miles">(miles)</span>
+                                    </div>
+                                    <div class="dir-divider"></div>
+                                </div>
+                            </div>
+
+                            <div class="dir-city-footer">Destination City</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Navigation Links -->
+            <div class="sidebar-bottom">
+                <nav class="user-nav">
+                    <a href="resetPWSignedIn.html" class="nav-link">
+                        Reset Password
+                    </a>
+                    <a href="#" class="nav-link" id="btn-view-favorites">
+                        Saved Routes
+                    </a>
+                </nav>
+                <div class="nav-divider"></div>
+
+                <!-- Phase 4: Favorite Save Heart (Moved to footer) -->
+                <div class="ar-favorite-row" id="ar-favorite-row" style="display:none;">
+                    <button class="btn-ar-fav" id="btn-ar-save-fav" aria-label="Save Route">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <button class="btn btn-secondary btn-signout" id="btn-signout">
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Map Area -->
+        <section class="map-container" id="map-wrap">
+            <div id="map-view"></div>
+            <!-- Loading overlay for UI feedback -->
+            <div class="map-loading-overlay" id="map-loading">
+                <div class="spinner"></div><p>Calculating Route...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Map Logic (Must load before Google Maps API for callback) -->
+    <script src="../JS/mapLogic.js"></script>
+
+    <!-- Google Maps API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjyFfDrIUfeGXJNJxG_YFIj2Oen-H90YQ&libraries=places&callback=initMap"></script>
+
+    <!-- Sign Out Confirmation Modal (UC4) -->
+    <div id="sign-out-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">Are you sure you want to sign out?</h2>
+            <div class="modal-actions">
+                <button id="modal-yes" class="btn-modal-yes">Yes</button>
+                <div class="modal-divider"></div>
+                <button id="modal-no" class="btn-modal-no">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../JS/signOut.js"></script>
+
+    <!-- Favorite Manager Modal -->
+    <div id="favorite-manager-modal" class="modal-overlay">
+        <div class="favorite-manager-content">
+            <button class="close-btn" id="close-favorite-manager">X</button>
+            <h2 class="favorite-title">Favorite Routes</h2>
+            
+            <div class="favorite-window-wrapper">
+                <div class="favorite-window">
+                    <div class="route-list-container">
+                        <div class="route-item selected">Seattle - Tacoma International Airport</div>
+                        <div class="route-item">San Francisco, CA</div>
+                    </div>
+                </div>
+                <!-- Scroll Controls outside the bordered window -->
+                <div class="route-scroll-controls">
+                    <button class="scroll-btn up-arrow">&#8593;</button>
+                    <button class="scroll-btn down-arrow">&#8595;</button>
+                </div>
+            </div>
+
+            <div class="favorite-actions">
+                <button class="btn-fav-action" id="btn-remove-route">Remove Route</button>
+                <button class="btn-fav-action" id="btn-load-route">Load Route</button>
+                <button class="btn-fav-action" id="btn-rename-route">Rename Route</button>
+            </div>
+
+            <div class="favorite-message-box" id="favorite-message">
+                Message textbox field
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Route Confirmation Modal -->
+    <div id="load-route-modal" class="modal-overlay">
+        <div class="modal-content confirmation-modal-content">
+            <h2 class="modal-title">Are you sure you want to load this route?</h2>
+            <div class="modal-actions">
+                <button id="load-route-yes" class="btn-modal-yes">Yes</button>
+                <div class="modal-divider"></div>
+                <button id="load-route-no" class="btn-modal-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Route Confirmation Modal -->
+    <div id="delete-route-modal" class="modal-overlay">
+        <div class="modal-content confirmation-modal-content">
+            <h2 class="modal-title">Are you sure you want to delete this route?</h2>
+            <div class="modal-actions">
+                <button id="delete-route-yes" class="btn-modal-yes">Yes</button>
+                <div class="modal-divider"></div>
+                <button id="delete-route-no" class="btn-modal-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Route Confirmation Modal -->
+    <div id="rename-route-modal" class="modal-overlay">
+        <div class="modal-content confirmation-modal-content">
+            <h2 class="modal-title">Are you sure you want to rename the route?</h2>
+            <div class="modal-actions">
+                <button id="rename-route-yes" class="btn-modal-yes">Yes</button>
+                <div class="modal-divider"></div>
+                <button id="rename-route-no" class="btn-modal-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Route Input Modal -->
+    <div id="rename-input-modal" class="modal-overlay">
+        <div class="favorite-manager-content rename-input-content">
+            <button class="close-btn" id="close-rename-input">X</button>
+            <h2 class="favorite-title">Rename Route</h2>
+            
+            <div class="rename-input-group">
+                <label for="route-new-name">New name:</label>
+                <input type="text" id="route-new-name" class="rename-text-input">
+            </div>
+
+            <button class="btn-fav-action btn-confirm-rename" id="btn-confirm-rename">Confirm</button>
+        </div>
+    </div>
+
+    <script src="../JS/favoriteManager.js"></script>
+</body>
+</html>
