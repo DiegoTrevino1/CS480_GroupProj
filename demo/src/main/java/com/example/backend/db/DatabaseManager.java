@@ -61,25 +61,22 @@ public class DatabaseManager {
      * Test method that inserts a sample user, emergency, and update.
      */
     public static void test() {
-        User user = new User("123", "ken", "123456");
-        insertUser(user.getUserID(), user.getUsername(), user.getPassword());
-        user = getUser("ken");
+        User user = new User("ken", "123456");
+        insertUser(user.getUsername(), user.getPassword());
     }
 
     /**
      * Inserts a new user into the users table.
      * 
-     * @param userID       the userID
      * @param userName     the username
      * @param passwordHash the hashed password
      */
-    public static void insertUser(String userID, String username, String passwordHash) {
+    public static void insertUser(String username, String passwordHash) {
         try (Connection conn = getConnection()) {
-            String query = "INSERT INTO users (userID, userPasswordHash, userName) VALUES (?, ?, ?)";
+            String query = "INSERT INTO users (userPasswordHash, userName) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, userID);
+            statement.setString(1, passwordHash);
             statement.setString(2, username);
-            statement.setString(3, passwordHash);
             statement.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -100,7 +97,7 @@ public class DatabaseManager {
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 return new User(
-                        result.getString("userID"),
+                        // result.getString("userID"),
                         result.getString("username"),
                         result.getString("userPasswordHash"));
             } else {
