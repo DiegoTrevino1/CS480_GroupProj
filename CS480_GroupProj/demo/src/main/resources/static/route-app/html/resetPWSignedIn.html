@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Route Planner</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="/route-app/css/mainPage.css">
+    <link rel="stylesheet" href="/route-app/css/resetPWSignedIn.css">
+    
+</head>
+<body>
+    <main class="app-container">
+        
+        <!-- Sidebar Navigation & Controls -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <header class="sidebar-header">
+                </header>
+
+                <form id="routing-form" class="routing-form">
+                    <!-- Start Input -->
+                    <div class="input-group">
+                        <label for="start-location">Start</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="start-location" name="start-location" required autocomplete="off">
+                        </div>
+                    </div>
+                    
+                    <!-- Destination Input -->
+                    <div class="input-group">
+                        <label for="end-location">Destination</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="end-location" name="end-location" required autocomplete="off">
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-route" id="btn-route">
+                        Route
+                    </button>
+                </form>
+
+                <!-- Embedded Reset Password Section -->
+                <form id="reset-pw-form" class="reset-pw-section">
+                    <div class="reset-pw-group">
+                        <label>Current Password</label>
+                        <input type="password" class="reset-pw-input" required>
+                    </div>
+
+                    <div class="reset-pw-group">
+                        <label>New Password</label>
+                        <input type="password" class="reset-pw-input" required>
+                    </div>
+
+                    <div class="reset-pw-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="reset-pw-input" required>
+                    </div>
+
+                    <div class="message-box">Message textbox field</div>
+
+                    <button type="submit" class="btn-submit-pw">Submit</button>
+                </form>
+            </div>
+
+            <!-- Bottom Navigation Links -->
+            <div class="sidebar-bottom">
+                <nav class="user-nav">
+                    <a href="#" class="nav-link">
+                        Saved Routes
+                    </a>
+                </nav>
+                <div class="nav-divider"></div>
+                <!-- In Screenshot: Sign Out is a bordered button -->
+                <button class="btn btn-secondary btn-signout" style="border: 2px solid #333; justify-content: center; display: flex; width: 60%; font-weight: 700;" onclick="window.location.href='signin.html'">
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Map Area -->
+        <section class="map-container" id="map-wrap">
+            <div id="map-view"></div>
+            <!-- Loading overlay for UI feedback -->
+            <div class="map-loading-overlay" id="map-loading">
+                <div class="spinner"></div><p>Calculating Route...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Local Script -->
+    <script src="/route-app/JS/script.js"></script>
+    
+    <script>
+        // Simple mock interaction for the submit button
+        document.getElementById('reset-pw-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // User validates fields here
+            document.querySelector('.message-box').style.color = '#22c55e'; // Green success message
+            document.querySelector('.message-box').innerText = "Password successfully updated!";
+        });
+    </script>
+</body>
+</html>
