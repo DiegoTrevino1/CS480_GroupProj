@@ -28,7 +28,7 @@ public class LoginManager {
     // Currently logged in account
     String currentUser = null;
 
-    /*
+    /**
      * @description constructor for LoginManager
      * 
      * @param HashMap containing all accounts currently stored
@@ -42,7 +42,7 @@ public class LoginManager {
         this.db = db;
     }
 
-    /*
+    /**
      * @description method to log into an account by checking its username
      * and password.
      * 
@@ -81,17 +81,17 @@ public class LoginManager {
         currentUser = null;
     }
 
-    /*
+    /**
      * @description method to add a user
      * 
      * @param User to be added
      */
     public void addUser(User user) {
         DatabaseManager.connect();
-        DatabaseManager.insertUser(user.getUserID(), user.getUsername(), user.getPassword());
+        DatabaseManager.insertUser(user.getUsername(), user.getPassword());
     }
 
-    /*
+    /**
      * @description method to remove a user
      * 
      * @param String username to be removed from users
@@ -105,7 +105,7 @@ public class LoginManager {
         return currentUser;
     }
 
-    /*
+    /**
      * @description checkPassword is a method to take password entered by
      * the user and check it against the stored password in its hash form
      * 

@@ -3,8 +3,13 @@ package com.example.backend.controller;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.db.DatabaseManager;
 import com.example.backend.model.User;
 import com.example.backend.service.LoginManager;
 
@@ -16,9 +21,11 @@ import jakarta.servlet.http.HttpSession;
 public class AuthController {
 
     private final LoginManager loginManager;
+    private final DatabaseManager databaseManager;
 
-    public AuthController(LoginManager loginManager) {
+    public AuthController(LoginManager loginManager, DatabaseManager databaseManager) {
         this.loginManager = loginManager;
+        this.databaseManager = databaseManager;
     }
 
     /** POST /api/auth/login */
@@ -26,7 +33,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest req, HttpSession session) {
         boolean success = loginManager.login(req.username(), req.password());
         if (success) {
-            User user = loginManager.getUser(req.username());
+            User user = databaseManager.getUser(req.username());
             session.setAttribute("userID",   user.getUserID());
             session.setAttribute("username", user.getUsername());
             return ResponseEntity.ok(Map.of(
@@ -44,7 +51,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("error", "Passwords do not match."));
         }
         try {
-            loginManager.addUser(new User(req.username(), req.password()));
+            databaseManager.insertUser(req.username(), req.password());
             return ResponseEntity.ok(Map.of("message", "Account created successfully."));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
@@ -66,8 +73,8 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("error", "Passwords do not match."));
         }
         try {
-            loginManager.removeUser(req.username());
-            loginManager.addUser(new User(req.username(), req.newPassword()));
+            databaseManager.removeUser(req.username());
+            databaseManager.insertUser(req.username(), req.newPassword());
             return ResponseEntity.ok(Map.of("message", "Password updated successfully."));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));

@@ -51,6 +51,12 @@ public class User {
         this.passHash = hashPassword(password);
     }
 
+    public User(int userID, String username, String password) {
+        this.userID = userID;
+        this.username = username;
+        this.passHash = hashPassword(password);
+    }
+
     // ── Getters ──────────────────────────────────────────────────────────────
 
     public int getUserID()      { return userID;   }
