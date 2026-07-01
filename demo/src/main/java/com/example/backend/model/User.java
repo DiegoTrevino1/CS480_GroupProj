@@ -39,13 +39,22 @@ public class User {
         passHash = hashPassword(password);
     }
 
-    /*
+    /**
      * @description getter for username
      * 
      * @return String username
      */
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * @description getter for userID
+     * 
+     * @return String userID
+     */
+    public String getUserID() {
+        return userID;
     }
 
     /*
